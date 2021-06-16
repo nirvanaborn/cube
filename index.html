@@ -31,7 +31,7 @@
         align-items: center;
         transform-style: preserve-3d;
         user-select: none;
-        transition: all 100ms ease-out;
+        transition: all 500ms ease-out;
       }
       .item {
         width: 100px;
@@ -111,7 +111,7 @@
         Y = event.clientY;
         cx = X - preX;
         cy = Y - preY;
-        debounce(handleRotateCube(cx, cy), 10);
+        debounce(handleRotateCube(cx, cy), 500);
       }
       function handleMouseUp() {
         flag = false;
@@ -142,8 +142,8 @@
         window.removeEventListener("touchmove", handleTouchMove);
       }
       function handleRotateCube(x, y) {
-        let tx = x / 100 + preCx;
-        let ty = y / 100 + preCy;
+        let tx = x / 30 + preCx;
+        let ty = y / 30 + preCy;
         cube.style.cssText += `transform:scale(${scale}) rotateY(${tx}deg) rotateX(${-ty}deg)`;
         preCx = tx;
         preCy = ty;
