@@ -31,7 +31,7 @@
         align-items: center;
         transform-style: preserve-3d;
         user-select: none;
-        transition: all 500ms ease-out;
+        transition: all 100ms ease-out;
       }
       .item {
         width: 100px;
@@ -94,8 +94,8 @@
       window.addEventListener("mousedown", handleMouseDown);
       window.addEventListener("mouseup", handleMouseUp);
       window.addEventListener("touchstart", handleTouchStart);
-      window.addEventListener("touchend", handleTouchStart);
-      cube.addEventListener("mousewheel", handleTouchEnd);
+      window.addEventListener("touchend", handleTouchEnd);
+      cube.addEventListener("mousewheel", handleMouseWheel);
       // PC端鼠标拖动事件
       function handleMouseDown() {
         preX = event.clientX;
