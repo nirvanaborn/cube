@@ -11,6 +11,7 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        touch-action: none;
       }
 
       html,
@@ -119,7 +120,6 @@
       }
       // 移动端触摸事件
       function handleTouchStart() {
-        event.preventDefault();
         preX = event.touches[0]?.pageX;
         preY = event.touches[0]?.pageY;
         flag = true;
@@ -129,7 +129,6 @@
         window.addEventListener("touchmove", handleTouchMove);
       }
       function handleTouchMove() {
-        event.preventDefault();
         X = event.changedTouches[0].pageX;
         Y = event.changedTouches[0].pageY;
         cx = X - preX;
@@ -137,7 +136,6 @@
         debounce(handleRotateCube(cx, cy), 500);
       }
       function handleTouchEnd() {
-        event.preventDefault();
         flag = false;
         window.removeEventListener("touchmove", handleTouchMove);
       }
