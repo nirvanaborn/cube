@@ -111,7 +111,7 @@
         Y = event.clientY;
         cx = X - preX;
         cy = Y - preY;
-        debounce(handleRotateCube(cx, cy), 500);
+        debounce(handleRotateCube(cx, cy), 10);
       }
       function handleMouseUp() {
         flag = false;
