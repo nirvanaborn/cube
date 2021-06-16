@@ -20,8 +20,9 @@
       }
       #cube {
         position: absolute;
-        top: calc(50% - 100px);
-        left: calc(50% - 100px);
+        top: 50%;
+        left: 50%;
+        margin: -50px 0 0 -50px;
         width: 100px;
         height: 100px;
         display: flex;
@@ -91,7 +92,10 @@
       const cube = document.getElementById("cube");
       window.addEventListener("mousedown", handleMouseDown);
       window.addEventListener("mouseup", handleMouseUp);
-      cube.addEventListener("mousewheel", handleMouseWheel);
+      window.addEventListener("touchstart", handleTouchStart);
+      window.addEventListener("touchend", handleTouchStart);
+      cube.addEventListener("mousewheel", handleTouchEnd);
+      // PC端鼠标拖动事件
       function handleMouseDown() {
         preX = event.clientX;
         preY = event.clientY;
@@ -112,16 +116,36 @@
         flag = false;
         window.removeEventListener("mousemove", handleMouseMove);
       }
+      // 移动端触摸事件
+      function handleTouchStart() {
+        console.log(event.touches);
+        preX = event.touches[0]?.pageX;
+        preY = event.touches[0]?.pageY;
+        flag = true;
+        if (!flag) {
+          return;
+        }
+        window.addEventListener("touchmove", handleTouchMove);
+      }
+      function handleTouchMove() {
+        X = event.changedTouches[0].pageX;
+        Y = event.changedTouches[0].pageY;
+        cx = X - preX;
+        cy = Y - preY;
+        debounce(handleRotateCube(cx, cy), 500);
+      }
+      function handleTouchEnd() {
+        flag = false;
+        window.removeEventListener("touchmove", handleTouchMove);
+      }
       function handleRotateCube(x, y) {
         let tx = x / 100 + preCx;
         let ty = y / 100 + preCy;
-        console.log(tx, ty);
         cube.style.cssText += `transform:scale(${scale}) rotateY(${tx}deg) rotateX(${-ty}deg)`;
         preCx = tx;
         preCy = ty;
       }
       function handleMouseWheel(e) {
-        console.log("scroll");
         if (e.wheelDelta === 150) {
           if (scale <= 1) {
             return;
