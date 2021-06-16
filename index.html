@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+    <title>Cube</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      #cube {
+        position: absolute;
+        top: calc(50% - 100px);
+        left: calc(50% - 100px);
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform-style: preserve-3d;
+        user-select: none;
+        transition: all 500ms ease-out;
+      }
+      .item {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        opacity: 0.8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+        color: #fff;
+      }
+      .front {
+        background-color: #f98;
+        transform: translateZ(50px);
+      }
+      .back {
+        background-color: #19a;
+        transform: rotateY(180deg) translateZ(50px);
+      }
+      .top {
+        background-color: #853;
+        transform: rotateX(90deg) translateZ(50px);
+      }
+      .bottom {
+        background-color: #37e;
+        transform: rotateX(-90deg) translateZ(50px);
+      }
+      .left {
+        background-color: #5ea;
+        transform: rotateY(-90deg) translateZ(50px);
+      }
+      .right {
+        background-color: #4a1;
+        transform: rotateY(90deg) translateZ(50px);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cube">
+      <div class="item front">1</div>
+      <div class="item back">2</div>
+      <div class="item top">3</div>
+      <div class="item bottom">4</div>
+      <div class="item left">5</div>
+      <div class="item right">6</div>
+    </div>
+    <script>
+      var X = 0,
+        Y = 0,
+        preX = 0,
+        preY = 0,
+        cx = 0,
+        cy = 0,
+        preCx = 0,
+        preCy = 0,
+        scale = 1;
+      flag = false;
+      const cube = document.getElementById("cube");
+      window.addEventListener("mousedown", handleMouseDown);
+      window.addEventListener("mouseup", handleMouseUp);
+      cube.addEventListener("mousewheel", handleMouseWheel);
+      function handleMouseDown() {
+        preX = event.clientX;
+        preY = event.clientY;
+        flag = true;
+        if (!flag) {
+          return;
+        }
+        window.addEventListener("mousemove", handleMouseMove);
+      }
+      function handleMouseMove() {
+        X = event.clientX;
+        Y = event.clientY;
+        cx = X - preX;
+        cy = Y - preY;
+        debounce(handleRotateCube(cx, cy), 500);
+      }
+      function handleMouseUp() {
+        flag = false;
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
+      function handleRotateCube(x, y) {
+        let tx = x / 100 + preCx;
+        let ty = y / 100 + preCy;
+        console.log(tx, ty);
+        cube.style.cssText += `transform:scale(${scale}) rotateY(${tx}deg) rotateX(${-ty}deg)`;
+        preCx = tx;
+        preCy = ty;
+      }
+      function handleMouseWheel(e) {
+        console.log("scroll");
+        if (e.wheelDelta === 150) {
+          if (scale <= 1) {
+            return;
+          }
+          scale -= 1;
+        } else if (e.wheelDelta === -150) {
+          if (scale >= 3) {
+            return;
+          }
+          scale += 1;
+        } else {
+          return;
+        }
+        cube.style.cssText += `transform:scale(${scale}) rotateY(${preCx}deg) rotateX(-${preCy}deg)`;
+      }
+      // 防抖
+      function debounce(fn, delay) {
+        let timer = null; //借助闭包
+        return function () {
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(fn, delay); // 简化写法
+        };
+      }
+    </script>
+  </body>
+</html>
